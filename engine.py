@@ -43,7 +43,9 @@ def main():
     fov_light_walls = True
     fov_radius = 10
 
+    # Monsters & Items Params
     max_monsters_per_room = 3
+    max_items_per_room = 2
 
 
     # Colors for tiles
@@ -70,7 +72,7 @@ def main():
 
     # Map initialization
     game_map = GameMap(map_width, map_height)
-    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room)
+    game_map.make_map(max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room, max_items_per_room)
 
 
     # Field of View Map Computation
@@ -93,13 +95,13 @@ def main():
 
     # GAME LOOP
     while not tcod.console_is_window_closed():
-        tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS, key, mouse)
+        tcod.sys_check_for_event(tcod.EVENT_KEY_PRESS | tcod.EVENT_MOUSE, key, mouse)
 
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 
         
-        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log,screen_width, screen_height, bar_width, panel_height, panel_y, colors)
+        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log,screen_width, screen_height, bar_width, panel_height, panel_y, mouse,colors)
         
         fov_recompute = False
 
